@@ -151,7 +151,7 @@ public class Eddy.Application : Gtk.Application {
         if (window == null) {
             window = new MainWindow ();
             add_window (window);
-            window.show_all ();
+            window.show ();
         } else {
             window.present ();
         }

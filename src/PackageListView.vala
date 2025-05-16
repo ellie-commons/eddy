@@ -56,26 +56,30 @@ public class Eddy.PackageListView : Gtk.Box {
 
         install_button = new Gtk.Button.with_label (_("Install"));
         install_button.clicked.connect (() => install_all ());
-        install_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+        install_button.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
 
         status_label = new Gtk.Label (null);
 
         var button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
-        button_box.margin = 12;
-        button_box.add (installed_size_label);
-        button_box.pack_end (install_button, false, false);
-        button_box.pack_end (status_label, false, false);
+        button_box.margin_top = 12;
+        button_box.margin_bottom = 12;
+        button_box.margin_start = 12;
+        button_box.margin_end = 12;
+        button_box.append (installed_size_label);
+        button_box.append (install_button);
+        button_box.append (status_label);
 
         var button_row = new Gtk.ListBoxRow ();
-        button_row.add (button_box);
+        button_row.set_child (button_box);
         button_row.selectable = false;
         button_row.activatable = false;
 
         list_box = new Gtk.ListBox ();
-        list_box.expand = true;
+        list_box.hexpand = true;
+        list_box.vexpand = true;
         list_box.set_sort_func (sort_func);
         list_box.row_activated.connect (on_row_activated);
-        list_box.add (button_row);
+        list_box.append (button_row);
 
         var separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
 
@@ -85,21 +89,24 @@ public class Eddy.PackageListView : Gtk.Box {
 
         var manage_privacy_button = new Gtk.Button.with_label (_("Manage Privacy Settings…"));
         manage_privacy_button.clicked.connect (on_manage_privacy_clicked);
-        manage_privacy_button.margin = 6;
+        manage_privacy_button.margin_top = 6;
+        manage_privacy_button.margin_bottom = 6;
+        manage_privacy_button.margin_start = 6;
+        manage_privacy_button.margin_end = 6;
         manage_privacy_button.halign = Gtk.Align.END;
-        history_box.pack_end (manage_privacy_button);
-        history_box.pack_end (separator);
+        history_box.append (manage_privacy_button);
+        history_box.append (separator);
 
         var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 6);
-        main_box.add (list_box);
+        main_box.append (list_box);
 
-        var scrolled = new Gtk.ScrolledWindow (null, null);
+        var scrolled = new Gtk.ScrolledWindow ();
         scrolled.hscrollbar_policy = Gtk.PolicyType.NEVER;
-        scrolled.add (main_box);
+        scrolled.set_child (main_box);
 
         notify["working"].connect (update);
-        add (scrolled);
-        add (history_box);
+        append (scrolled);
+        append (history_box);
 
         set_mode (mode);
     }
@@ -121,7 +128,7 @@ public class Eddy.PackageListView : Gtk.Box {
 
         update ();
         added (package);
-        show_all ();
+        show ();
     }
 
     public bool has_filename (string filename) {

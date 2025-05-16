@@ -47,9 +47,12 @@ public class Eddy.PackageRow : Gtk.ListBoxRow {
 
     construct {
         main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
-        main_box.margin = 12;
+        main_box.margin_top = 12;
+        main_box.margin_bottom = 12;
+        main_box.margin_start = 12;
+        main_box.margin_end = 12;
 
-        var package_image = new Gtk.Image.from_icon_name ("package", Gtk.IconSize.DND);
+        var package_image = new Gtk.Image.from_icon_name ("package");
         package_image.valign = Gtk.Align.START;
 
         var summary_label = new Gtk.Label ("<b>%s</b>".printf (Markup.escape_text (package.summary)));
@@ -64,8 +67,8 @@ public class Eddy.PackageRow : Gtk.ListBoxRow {
         name_label.halign = Gtk.Align.START;
 
         var vertical_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 6);
-        vertical_box.add (summary_label);
-        vertical_box.add (name_label);
+        vertical_box.append (summary_label);
+        vertical_box.append (name_label);
 
         status_label = new Gtk.Label (null);
         status_label.use_markup = true;
@@ -88,25 +91,25 @@ public class Eddy.PackageRow : Gtk.ListBoxRow {
         reinstall_button.halign = Gtk.Align.CENTER;
         size_group.add_widget (reinstall_button);
 
-        remove_button = new Gtk.Button.from_icon_name ("edit-delete-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+        remove_button = new Gtk.Button.from_icon_name ("edit-delete-symbolic");
         remove_button.tooltip_text = _("Remove from list");
         remove_button.valign = Gtk.Align.CENTER;
         remove_button.opacity = 0;
-        remove_button.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
-        remove_button.show_all ();
+        remove_button.get_style_context ().add_class (Granite.STYLE_CLASS_FLAT);
+        remove_button.show ();
         remove_button.clicked.connect (() => removed ());
         remove_button.enter_notify_event.connect (() => {
             remove_button.opacity = 1;
             return false;
         });
 
-        main_box.add (package_image);
-        main_box.add (vertical_box);
-        main_box.pack_end (status_label, false, false);
-        main_box.pack_end (action_button, false, false);
-        main_box.pack_end (reinstall_button, false, false);
-        main_box.pack_end (state_icon, false, false);
-        main_box.pack_end (remove_button, false, false);
+        main_box.append (package_image);
+        main_box.append (vertical_box);
+        main_box.append (status_label);
+        main_box.append (action_button);
+        main_box.append (reinstall_button);
+        main_box.append (state_icon);
+        main_box.append (remove_button);
 
         var event_box = new Gtk.EventBox ();
         event_box.add (main_box);
@@ -131,7 +134,7 @@ public class Eddy.PackageRow : Gtk.ListBoxRow {
         update_state_icon ();
         update_status ();
         update_buttons ();
-        add (event_box);
+        set_child (event_box);
     }
 
     public PackageRow (Package package) {
@@ -158,21 +161,21 @@ public class Eddy.PackageRow : Gtk.ListBoxRow {
     private void update_buttons () {
         if (package.is_installed) {
             action_button.label = _("Uninstall");
-            action_button.get_style_context ().add_class (Gtk.STYLE_CLASS_DESTRUCTIVE_ACTION);
+            action_button.get_style_context ().add_class (Granite.STYLE_CLASS_DESTRUCTIVE_ACTION);
         } else {
             action_button.label = _("Install");
-            action_button.get_style_context ().remove_class (Gtk.STYLE_CLASS_DESTRUCTIVE_ACTION);
+            action_button.get_style_context ().remove_class (Granite.STYLE_CLASS_DESTRUCTIVE_ACTION);
         }
 
         if (package.can_update) {
             reinstall_button.label = _("Update");
-            reinstall_button.get_style_context ().remove_class (Gtk.STYLE_CLASS_DESTRUCTIVE_ACTION);
-            reinstall_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+            reinstall_button.get_style_context ().remove_class (Granite.STYLE_CLASS_DESTRUCTIVE_ACTION);
+            reinstall_button.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
             set_widget_visible (reinstall_button, !package.has_task);
         } else if (package.can_downgrade) {
             reinstall_button.label = _("Downgrade");
-            reinstall_button.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-            reinstall_button.get_style_context ().add_class (Gtk.STYLE_CLASS_DESTRUCTIVE_ACTION);
+            reinstall_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+            reinstall_button.get_style_context ().add_class (Granite.STYLE_CLASS_DESTRUCTIVE_ACTION);
             set_widget_visible (reinstall_button, !package.has_task);
         } else {
             set_widget_visible (reinstall_button, false);
@@ -187,7 +190,7 @@ public class Eddy.PackageRow : Gtk.ListBoxRow {
         unowned string? icon = package.get_exit_icon ();
 
         if (icon != null) {
-            state_icon.set_from_icon_name (icon, Gtk.IconSize.SMALL_TOOLBAR);
+            state_icon.set_from_icon_name (icon);
             set_widget_visible (state_icon, true);
         } else {
             set_widget_visible (state_icon, false);

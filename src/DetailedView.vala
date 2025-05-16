@@ -26,7 +26,10 @@ public class Eddy.DetailedView : Gtk.Box {
 
     construct {
         orientation = Gtk.Orientation.VERTICAL;
-        margin = 40;
+        margin_top = 40;
+        margin_bottom = 40;
+        margin_start = 40;
+        margin_end = 40;
 
         name_label = new Gtk.Label (_("Unknown"));
 
@@ -48,13 +51,13 @@ public class Eddy.DetailedView : Gtk.Box {
         homepage_button.no_show_all = true;
 
         var header_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
-        header_box.add (name_label);
-        header_box.pack_end (homepage_button, false, false);
+        header_box.append (name_label);
+        header_box.append (homepage_button);
 
-        add (header_box);
-        add (version_label);
-        add (date_installed_label);
-        add (description_label);
+        append (header_box);
+        append (version_label);
+        append (date_installed_label);
+        append (description_label);
     }
 
     public void set_package (Package package) {

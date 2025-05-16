@@ -53,7 +53,7 @@ public class Eddy.MainWindow : Gtk.Window {
 
     private Gtk.Button back_button;
 
-    private Granite.Widgets.Welcome welcome_view;
+    private Granite.Placeholder welcome_view;
     private PackageListView list_view;
     private DetailedView detailed_view;
 
@@ -80,7 +80,7 @@ public class Eddy.MainWindow : Gtk.Window {
     construct {
         stack = new Gtk.Stack ();
         stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
-        stack.get_style_context ().add_class (Gtk.STYLE_CLASS_VIEW);
+        stack.get_style_context ().add_class (Granite.STYLE_CLASS_VIEW);
 
         list_view = new PackageListView ();
         list_view.install_all.connect ((packages) => on_install_all.begin ());
@@ -99,31 +99,30 @@ public class Eddy.MainWindow : Gtk.Window {
         spinner_grid = new Gtk.Grid ();
         spinner_grid.halign = Gtk.Align.CENTER;
         spinner_grid.valign = Gtk.Align.CENTER;
-        spinner_grid.add (spinner);
+        spinner_grid.attach (spinner, 0, 0, 1, 1);
 
-        open_button = new Gtk.Button.from_icon_name ("document-open", Gtk.IconSize.LARGE_TOOLBAR);
+        open_button = new Gtk.Button.from_icon_name ("document-open", Gtk.IconSize.LARGE);
         open_button.tooltip_text = _("Open…");
         open_button.clicked.connect (show_open_dialog);
 
         open_button_revealer = new Gtk.Revealer ();
         open_button_revealer.transition_type = Gtk.RevealerTransitionType.CROSSFADE;
-        open_button_revealer.add (open_button);
+        open_button_revealer.set_child (open_button);
 
-        back_button = new Gtk.Button.from_icon_name ("go-previous-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+        back_button = new Gtk.Button.from_icon_name ("go-previous-symbolic", Gtk.IconSize.LARGE);
         back_button.tooltip_text = _("Go back");
         back_button.clicked.connect (on_back_button_clicked);
         set_widget_visible (back_button, false);
 
-        warn_image = new Gtk.Image.from_icon_name ("dialog-warning", Gtk.IconSize.LARGE_TOOLBAR);
+        warn_image = new Gtk.Image.from_icon_name ("dialog-warning", Gtk.IconSize.LARGE);
         warn_image.tooltip_text = _("Other applications may interrupt tasks currently performed by Eddy");
         set_widget_visible (warn_image, false);
 
         set_size_request (700, 600);
 
         header_bar = new Gtk.HeaderBar ();
-        header_bar.set_title (Constants.APP_NAME);
-        header_bar.show_close_button = true;
-        header_bar.has_subtitle = false;
+        header_bar.set_title_widget ((new Gtk.Label (Constants.APP_NAME)));
+        header_bar.show_title_buttons = true;
         header_bar.pack_start (back_button);
         header_bar.pack_start (open_button_revealer);
         header_bar.pack_end (warn_image);
@@ -133,9 +132,10 @@ public class Eddy.MainWindow : Gtk.Window {
         var helper = MimeTypeHelper.get_default ();
         main_extension = helper.resolve_extension_for_mime_types (Application.supported_mimetypes);
 
-        welcome_view = new Granite.Widgets.Welcome (_("Install some apps"), _("Drag and drop .%s files or open them to begin installation.").printf (main_extension));
+        //welcome_view = new Granite.Placeholder (_("Install some apps"), _("Drag and drop .%s files or open them to begin installation.").printf (main_extension));
+        welcome_view = new Granite.Placeholder (_("Install some apps"));
         welcome_view.margin_start = welcome_view.margin_end = 6;
-        open_index = welcome_view.append ("document-open", _("Open"), _("Browse to open a single file"));
+        open_index = welcome_view.append_button ("document-open", _("Open"), _("Browse to open a single file"));
 
         welcome_view.activated.connect (on_welcome_view_activated);
 
@@ -150,7 +150,7 @@ public class Eddy.MainWindow : Gtk.Window {
 
         var provider = new Gtk.CssProvider ();
         try {
-            provider.load_from_data (BRAND_STYLESHEET, -1);
+            provider.load_from_data (BRAND_STYLESHEET);
             Gtk.StyleContext.add_provider_for_screen (get_screen (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         } catch (Error e) {
             warning ("Could not create CSS Provider: %s", e.message);
@@ -160,19 +160,10 @@ public class Eddy.MainWindow : Gtk.Window {
 
         var settings = AppSettings.get_default ();
 
-        int x = settings.window_x;
-        int y = settings.window_y;
-
-        if (x != -1 && y != -1) {
-            move (x, y);
-        }
-
         resize (settings.window_width, settings.window_height);
         if (settings.window_maximized) {
             maximize ();
         }
-
-        set_keep_above (settings.always_on_top);
 
         drag_data_received.connect (on_drag_data_received);
 
@@ -356,14 +347,14 @@ public class Eddy.MainWindow : Gtk.Window {
     }
 
     private void add_open_downloads_entry () {
-        open_dowloads_index = welcome_view.append ("folder-download", _("Load from Downloads"), _("Load .%s files from your Downloads folder").printf (main_extension));
-        welcome_view.show_all ();
+        open_dowloads_index = welcome_view.append_button ("folder-download", _("Load from Downloads"), _("Load .%s files from your Downloads folder").printf (main_extension));
+        welcome_view.show ();
     }
 
     private async void populate_installed_apps () {
         int size = yield LogManager.get_default ().fetch ();
         if (size > 0) {
-            log_index = welcome_view.append ("text-x-changelog", _("View Previously Installed Apps"), _("Browse history of installed applications"));
+            log_index = welcome_view.append_button ("text-x-changelog", _("View Previously Installed Apps"), _("Browse history of installed applications"));
         }
 
         populate_download_folder_uris ();
@@ -467,9 +458,7 @@ public class Eddy.MainWindow : Gtk.Window {
 
             var dialog = new Granite.MessageDialog.with_image_from_icon_name (_("Some Packages Could Not Be Added"), builder.str, "dialog-warning");
             dialog.title = Constants.APP_NAME;
-            dialog.show_all ();
-            dialog.run ();
-            dialog.destroy ();
+            dialog.show ();
         }
     }
 
@@ -495,7 +484,7 @@ public class Eddy.MainWindow : Gtk.Window {
         chooser.add_filter (all_filter);
 
         chooser.response.connect (on_chooser_response);
-        chooser.run ();
+        chooser.show ();
     }
 
     private void on_chooser_response (Gtk.Dialog chooser, int response) {
