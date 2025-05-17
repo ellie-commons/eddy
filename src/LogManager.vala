@@ -35,7 +35,7 @@ public class Eddy.LogManager : Object {
     }
 
     construct {
-        app_info = new DesktopAppInfo ("com.github.donadigo.eddy.desktop");
+        app_info = new DesktopAppInfo ("io.github.ellie_commons.eddy.desktop");
     }
 
     public Gee.HashSet<PackageUri> get_installed_uris () {
@@ -58,7 +58,7 @@ public class Eddy.LogManager : Object {
         event.timestamp = new DateTime.now_local ().to_unix ();
         
         if (app_info == null) {
-            app_info = new DesktopAppInfo ("com.github.donadigo.eddy.desktop");
+            app_info = new DesktopAppInfo ("io.github.ellie_commons.eddy.desktop");
         }
 
         if (app_info != null) {
@@ -91,7 +91,7 @@ public class Eddy.LogManager : Object {
         event.manifestation = "user-action";
 
         if (app_info == null) {
-            app_info = new DesktopAppInfo ("com.github.donadigo.eddy.desktop");
+            app_info = new DesktopAppInfo ("io.github.ellie_commons.eddy.desktop");
         }
 
         if (app_info != null) {

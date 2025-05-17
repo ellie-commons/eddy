@@ -1,12 +1,12 @@
 
-# Dutch translations for com.github.donadigo.eddy package.
+# Dutch translations for io.github.ellie_commons.eddy package.
 # Copyright (C) 2017 Adam Bieńkowski
-# This file is distributed under the same license as the com.github.donadigo.eddy package.
+# This file is distributed under the same license as the io.github.ellie_commons.eddy package.
 # Patrick van Efferen <patrickvanefferen@gmail.com>, 2017.
 
 msgid ""
 msgstr ""
-"Project-Id-Version: com.github.donadigo.eddy\n"
+"Project-Id-Version: io.github.ellie_commons.eddy\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-04 23:37+0200\n"
 "PO-Revision-Date: 2017-09-08 11:08+0200\n"

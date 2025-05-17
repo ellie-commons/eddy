@@ -3,8 +3,8 @@ Type=Application
 Name=Eddy
 GenericName=Package Installer
 Comment=Install Debian packages
-Exec=com.github.donadigo.eddy %U
-Icon=com.github.donadigo.eddy
+Exec=io.github.ellie_commons.eddy %U
+Icon=io.github.ellie_commons.eddy
 Terminal=false
 Categories=System;GTK;
 Actions=AboutDialog;
@@ -14,5 +14,5 @@ MimeType=application/x-deb;application/vnd.debian.binary-package;
 Keywords=package;apt;dpkg;install;
 
 [Desktop Action AboutDialog]
-Exec=xdg-open appstream://com.github.donadigo.eddy.desktop
+Exec=xdg-open appstream://io.github.ellie_commons.eddy.desktop
 Name=About Eddy

@@ -24,7 +24,7 @@ public class Eddy.Application : Gtk.Application {
     construct {
         flags |= ApplicationFlags.HANDLES_OPEN;
 
-        application_id = "com.github.donadigo.eddy";
+        application_id = "io.github.ellie_commons.eddy";
 
         Intl.setlocale (LocaleCategory.ALL, "");
         Intl.bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);

@@ -1,4 +1,4 @@
-project('com.github.donadigo.eddy', 'vala', 'c')
+project('io.github.ellie_commons.eddy', 'vala', 'c')
 
 gnome = import('gnome')
 i18n = import('i18n')

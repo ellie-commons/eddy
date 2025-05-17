@@ -1,5 +1,5 @@
-<schemalist>
-	<schema id="com.github.donadigo.eddy" path="/com/github/donadigo/eddy/" gettext-domain="eddy">
+/<schemalist>
+	<schema id="io.github.ellie_commons.eddy" path="/io/github/ellie_commons/eddy/" gettext-domain="eddy">
 		<key name="mime-types" type="as">
 			<default>[]</default>
 			<summary>Supported mime types</summary>

@@ -341,7 +341,7 @@ public class Eddy.MainWindow : Gtk.Window {
 
             var notification = new Notification (title);
             notification.set_body (body);
-            notification.set_icon (new ThemedIcon ("com.github.donadigo.eddy"));
+            notification.set_icon (new ThemedIcon ("io.github.ellie_commons.eddy"));
             app.send_notification ("installed", notification);
         }
     }
