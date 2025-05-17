@@ -14,7 +14,7 @@
 <br/>
 
 <p align="center">
-    <img src="Screenshot_1.png" alt="Screenshot">
+    <img src="https://github.com/ellie-commons/eddy/blob/master/data/screenshots/Screenshot_1.png" alt="Screenshot">
 </p>
 
 Install, update, uninstall and view information about debian packages.
